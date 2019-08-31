@@ -12,61 +12,15 @@
           text-color="#fff"
           active-text-color="#ffd04b"
         >
-          <el-submenu index="1">
+          <el-submenu :index="item.path" v-for="item in menuList" :key="item.id">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{item.authName}}</span>
             </template>
-
-            <el-menu-item index="/home/user">
+            <el-menu-item :index="'/home/'+subitem.path" v-for="subitem in item.children" :key="subitem.id">
               <template slot="title">
                 <i class="el-icon-menu"></i>
-                <span>用户列表</span>
-              </template>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>后台管理</span>
-            </template>
-
-            <el-menu-item index="/home/rights">
-              <template slot="title">
-                <i class="el-icon-menu"></i>
-                <span>权限列表</span>
-              </template>
-            </el-menu-item>
-            <el-menu-item index="/home/roles">
-              <template slot="title">
-                <i class="el-icon-menu"></i>
-                <span>角色列表</span>
-              </template>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>导航一</span>
-            </template>
-
-            <el-menu-item index="3-3">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>导航三</span>
-              </template>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>导航一</span>
-            </template>
-
-            <el-menu-item index="4-3">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>导航三</span>
+                <span>{{subitem.authName}}</span>
               </template>
             </el-menu-item>
           </el-submenu>
@@ -86,7 +40,23 @@
   </div>
 </template>
 <script>
-export default {}
+import { getLeftMenu } from '@/api/right_index.js'
+export default {
+  data () {
+    return {
+      menuList: []
+    }
+  },
+  mounted () {
+    getLeftMenu()
+      .then(res => {
+        // console.log(res)
+        if (res.data.meta.status === 200) {
+          this.menuList = res.data.data
+        }
+      })
+  }
+}
 </script>
 <style lang="less" scoped>
 .home {

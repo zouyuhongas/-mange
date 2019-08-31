@@ -311,6 +311,8 @@ export default {
                   type: ' success',
                   message: '删除成功'
                 })
+                // this.init()
+                this.userobj.pagenum = Math.ceil((this.total - 1) / this.userobj.pagenum ? --this.userobj.pagenum : this.userobj.pagenum)
                 this.init()
               } else {
                 this.$message({
